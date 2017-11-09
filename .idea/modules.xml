@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/configsys.iml" filepath="$PROJECT_DIR$/.idea/modules/configsys.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/configsys_main.iml" filepath="$PROJECT_DIR$/.idea/modules/configsys_main.iml" group="configsys" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/configsys_test.iml" filepath="$PROJECT_DIR$/.idea/modules/configsys_test.iml" group="configsys" />
+    </modules>
+  </component>
+</project>
