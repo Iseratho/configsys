@@ -26,13 +26,13 @@ object Exercise_2b_4 {
 
     for (i in 1 until clockRates.size) {
       val c5 = model.arithm(clockRates[0], "=", clockRates[i])
-      val c6 = model.arithm(numCPUs, ">=", i)
+      val c6 = model.arithm(numCPUs, ">", i)
       model.ifThen(c6, c5)
     }
 
     for (i in 0 until clockRates.size) {
       val c5 = model.arithm(clockRates[i], "=", 0)
-      val c6 = model.arithm(numCPUs, "<", i)
+      val c6 = model.arithm(numCPUs, "<=", i)
       model.ifThen(c6, c5)
     }
 
