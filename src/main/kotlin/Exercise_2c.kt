@@ -1,19 +1,27 @@
+import kotlinchoco.arithm
+import kotlinchoco.toIntValues
 import org.chocosolver.solver.Model
 
 object BicycleConfigurator {
   // mandatory
-  class FrameType {
-    class Triathlon(
-        val f2t1: Int = 300,
-        val f2t2: Int = 400
-    )
-    class Diamond(
-        val f1d: Int = 150,
-        val f2d: Int = 200
-    )
-    class StepThrough(
-        val f1s: Int = 100
-    )
+//  class FrameType {
+//    class Triathlon(
+//        val f2t1: Int = 300,
+//        val f2t2: Int = 400
+//    )
+//    class Diamond(
+//        val f1d: Int = 150,
+//        val f2d: Int = 200
+//    )
+//    class StepThrough(
+//        val f1s: Int = 100
+//    )
+//  }
+
+  enum class FrameType {
+    TRIATHLON,
+    DIAMOND,
+    STEP_THROUGH
   }
 
   //mandatory
@@ -43,24 +51,43 @@ object BicycleConfigurator {
 
   class CustomerNeed (
       val usageTypes: List<UsageType>,
-      val size: Int
-  ) {
-    val tall: Boolean = this.size > 24
-  }
+      val isTall: Boolean
+  )
+//  {
+//    val tall: Boolean = this.size > 24
+//  }
 
   @JvmStatic
   fun main(args: Array<String>) {
     val model = Model("bicycle problem")
 
     // 2. Create variables
-    val biketype = model.intVar("BikeType", BikeType.values().map { it.ordinal }.toIntArray())
+    val biketype = model.intVar("BikeType", BikeType.values().toIntValues())
     val price = model.intVar("price", 0, 1000)
+
+//    val customerNeed = CustomerNeed(listOf(UsageType.OFFROAD), 22)
+
+    val frame = model.intVar(FrameType.values().toIntValues())
+
+    val needsOffroad = model.boolVar()
+    val needsSpeed = model.boolVar()
+    val needsNight = model.boolVar()
+
+    val isMountainBike = model.arithm(biketype, "=", BikeType.MOUNTAIN)
+    model.ifThen(needsOffroad, isMountainBike)
+    val isRacingBike = model.arithm(biketype, "=", BikeType.RACING)
+    model.ifThen(needsSpeed, isRacingBike)
+
+
+    model.ifThen(isMountainBike, model.arithm(frame, "=", FrameType.DIAMOND))
+//    model.ifThen()
 
     // 3. Post constraints
     // 4. Solve the problem
     model.setObjective(Model.MINIMIZE, price)
-    model.solver.solve()
+    val solutions = model.solver.findOptimalSolution(price, Model.MINIMIZE)
+
     // 5. Print the solution
-    println(biketype) // Prints Y = 2
+    println(solutions) // Prints Y = 2
   }
 }

@@ -144,10 +144,10 @@ object ElbaTrekking {
     }
 
     // if a place was not passed by it is not visited
-    places.forEach {
-
+    places.forEachIndexed { index, place ->
+      val placeContained = model.member(index, placesVisited)
+//      model.
     }
-
 //    val solution = model.solver.findSolution()
 //    val solution = model.solver.findOptimalSolution(numRoutesUsed, Model.MAXIMIZE)
     val solution = model.solver.findOptimalSolution(usedMinutes, Model.MINIMIZE)
