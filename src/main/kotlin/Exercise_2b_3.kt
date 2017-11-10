@@ -2,7 +2,6 @@ import org.chocosolver.solver.Model
 import org.chocosolver.solver.constraints.Constraint
 import org.chocosolver.solver.constraints.IIntConstraintFactory
 import org.chocosolver.solver.variables.IntVar
-import kotlin.reflect.KClass
 
 object Exercise_2b_3 {
   enum class UsageType {
@@ -52,6 +51,13 @@ object Exercise_2b_3 {
     }
 
     val solutions = model.solver.findAllSolutions()
+    solutions.forEach {
+      val ut = UsageType.values()[it.getIntVal(usageType)]
+      val crs = clockRates.map { cr ->
+        ClockRate.values()[it.getIntVal(cr)]
+      }
+      println("UsageType: $ut, Clockrate: $crs")
+    }
 
     println(solutions.size)
   }

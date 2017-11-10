@@ -44,6 +44,14 @@ object Exercise_2b_2 {
 
     val solutions = model.solver.findAllSolutions()
 
+    solutions.forEach {
+      val ut = UsageType.values()[it.getIntVal(usageType)]
+      val crs = clockRates.map { cr ->
+        ClockRate.values()[it.getIntVal(cr)]
+      }
+      println("UsageType: $ut, Clockrate: $crs")
+    }
+
     println(solutions.size)
   }
 }
