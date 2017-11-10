@@ -30,6 +30,12 @@ object Exercise_2b_4 {
       model.ifThen(c6, c5)
     }
 
+    for (i in 0 until clockRates.size) {
+      val c5 = model.arithm(clockRates[i], "=", 0)
+      val c6 = model.arithm(numCPUs, "<", i)
+      model.ifThen(c6, c5)
+    }
+
     val c1 = model.arithm(usageType, "=", UsageType.SCIENTIFIC)
     clockRates.forEach {
       val c2 = model.arithm(it, "=", ClockRate.FOUR)
