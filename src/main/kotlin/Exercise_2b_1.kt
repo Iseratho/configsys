@@ -39,6 +39,12 @@ object PcConfigurator {
 
     val solutions = model.solver.findAllSolutions()
 
+    solutions.forEach {
+      val ut = UsageType.values()[it.getIntVal(usageType)]
+      val cr = ClockRate.values()[it.getIntVal(clockRate)]
+      println("UsageType: $ut, Clockrate: $cr")
+    }
+
     println(solutions.size)
   }
 }
