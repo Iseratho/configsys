@@ -1,4 +1,7 @@
 import org.chocosolver.solver.Model
+import org.chocosolver.solver.constraints.Constraint
+import org.chocosolver.solver.constraints.IIntConstraintFactory
+import org.chocosolver.solver.variables.IntVar
 
 object Exercise_2b_4 {
   enum class UsageType {
@@ -14,6 +17,12 @@ object Exercise_2b_4 {
   }
 
   private fun Array<out Enum<*>>.toIntValues(): IntArray = this.map { it.ordinal }.toIntArray()
+  private inline fun <reified T : Enum<T>> intValues(): IntArray {
+    return enumValues<T>().map { it.ordinal }.toIntArray()
+  }
+  private fun IIntConstraintFactory.arithm(variable: IntVar, op: String, cste: Enum<*>): Constraint {
+    return this.arithm(variable, op, cste.ordinal)
+  }
 
   @JvmStatic
   fun main(args: Array<String>) {
@@ -22,8 +31,8 @@ object Exercise_2b_4 {
     val maxCPU = 4
 
     val numCPUs = model.intVar(1, maxCPU)
-    val usageType = model.intVar(UsageType.values().toIntValues())
-    val clockRates = model.intVarArray(maxCPU, ClockRate.values().toIntValues())
+    val usageType = model.intVar(intValues<UsageType>())
+    val clockRates = model.intVarArray(maxCPU, intValues<ClockRate>())
 
     for (i in 1 until clockRates.size) {
       val c5 = model.arithm(clockRates[0], "=", clockRates[i])
@@ -31,15 +40,15 @@ object Exercise_2b_4 {
       model.ifThen(c6, c5)
     }
 
-    val c1 = model.arithm(usageType, "=", UsageType.SCIENTIFIC.ordinal)
+    val c1 = model.arithm(usageType, "=", UsageType.SCIENTIFIC)
     clockRates.forEach {
-      val c2 = model.arithm(it, "=", ClockRate.FOUR.ordinal)
+      val c2 = model.arithm(it, "=", ClockRate.FOUR)
       model.ifThen(c1, c2)
     }
 
-    val c3 = model.arithm(usageType, "=", UsageType.MULTIMEDIA.ordinal)
+    val c3 = model.arithm(usageType, "=", UsageType.MULTIMEDIA)
     clockRates.forEach {
-      val c4 = model.arithm(it, "!=", ClockRate.ONE.ordinal)
+      val c4 = model.arithm(it, "!=", ClockRate.ONE)
       model.ifThen(c3, c4)
     }
 
