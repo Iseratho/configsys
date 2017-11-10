@@ -13,13 +13,14 @@ object BusConfiguration {
   fun main(args: Array<String>) {
     val maxPower = 2000
     val maxSeats = 80
+    val maxDVDs = 4
 
     val model = Model("bus problem")
     val numSeats = model.intVar("#seats", 0, maxSeats)
     val numDeluxeSeats = model.intVar("#deluxe", 0, maxSeats)
     val numLCDs = model.intVar("#lcd", 0, maxSeats)
     val busType = model.intVar("type", BusType.values().toIntValues())
-    val numDVDplayers = model.intVar("#dvd", 0, 4)
+    val numDVDplayers = model.intVar("#dvd", 0, maxDVDs)
     val powerConsumption = model.intVar("power", 0, maxPower)
     val powerConsumptionDVD = model.intVar("pDVD", 0, maxPower)
     val powerConsumptionLamps = model.intVar("pLamps", 0, maxPower)
