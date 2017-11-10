@@ -1,7 +1,5 @@
 import org.chocosolver.solver.Model
-import org.chocosolver.solver.constraints.Constraint
-import org.chocosolver.solver.constraints.IIntConstraintFactory
-import org.chocosolver.solver.variables.IntVar
+import kotlinchoco.*
 
 object Exercise_2b_3 {
   enum class UsageType {
@@ -14,15 +12,6 @@ object Exercise_2b_3 {
     ONE,
     TWO,
     FOUR
-  }
-
-  private fun Array<out Enum<*>>.toIntValues(): IntArray = this.map { it.ordinal }.toIntArray()
-
-  private inline fun <reified T : Enum<T>> intValues(): IntArray {
-      return enumValues<T>().map { it.ordinal }.toIntArray()
-  }
-  private fun IIntConstraintFactory.arithm(variable: IntVar, op: String, cste: Enum<*>): Constraint {
-    return this.arithm(variable, op, cste.ordinal)
   }
 
   @JvmStatic
