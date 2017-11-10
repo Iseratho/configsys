@@ -1,4 +1,5 @@
 import org.chocosolver.solver.Model
+import kotlinchoco.*
 
 object ElbaTrekking {
 
@@ -98,6 +99,8 @@ object ElbaTrekking {
 
     val model = Model("hiking problem")
 
+    val haveToBeVisited = intArrayOf(Places.Marciana.ordinal)
+
     // Problem no usage of same two times
 //    val routesUsed = model.boolVarArray(topology.size)
 
@@ -115,28 +118,39 @@ object ElbaTrekking {
 
 
     val directedTopology = topology + topology.map { Route(it.nodes.first to it.nodes.second, it.time) }
-    val routesUsed = model.setVar(intArrayOf(), directedTopology.indices.toList().toIntArray())
+    val routesUsed = model.setVar("routesUsed", intArrayOf(), directedTopology.indices.toList().toIntArray())
 
-    val usedMinutes = model.intVar(0, minutes)
+    val usedMinutes = model.intVar("usedMinutes", 0, minutes)
 
     // Must be within max minutes
     model.sumElements(routesUsed, directedTopology.map { it.time }.toIntArray(), usedMinutes).post()
 
-    val numRoutesUsed = model.intVar(0, minutes/minTravel)
+    val numRoutesUsed = model.intVar("numRoutesUsed", 0, minutes/minTravel)
 
     // Num Routes must be same as routes used
     model.sumElements(routesUsed, directedTopology.map { 1 }.toIntArray(), numRoutesUsed).post()
 
-    val placesVisited = model.setVar(intArrayOf(Places.Marciana.ordinal), Places.values().map { it.ordinal }.toIntArray())
+    val placesVisited = model.setVar("placesVisited", haveToBeVisited, Places.values().toIntValues())
 
+    // each place passed by is visited
     topology.forEachIndexed { index, route ->
-//      model.reif
-//      model.if
-//      routesUsed.
+      val routeContained = model.member(index, routesUsed)
+      val place1 = route.nodes.first.ordinal
+      val place1MustBeContained = model.member(place1, placesVisited)
+      model.ifThen(routeContained, place1MustBeContained)
+      val place2 = route.nodes.first.ordinal
+      val place2MustBeContained = model.member(place2, placesVisited)
+      model.ifThen(routeContained, place2MustBeContained)
     }
 
-    val solution = model.solver.findSolution()
+    // if a place was not passed by it is not visited
+    places.forEach {
+
+    }
+
+//    val solution = model.solver.findSolution()
 //    val solution = model.solver.findOptimalSolution(numRoutesUsed, Model.MAXIMIZE)
+    val solution = model.solver.findOptimalSolution(usedMinutes, Model.MINIMIZE)
     if (solution != null) {
       println(solution.toString())
     }

@@ -26,7 +26,7 @@ object Exercise_2b_4 {
 
     for (i in 1 until clockRates.size) {
       val c5 = model.arithm(clockRates[0], "=", clockRates[i])
-      val c6 = model.arithm(numCPUs, ">", i)
+      val c6 = model.arithm(numCPUs, ">=", i)
       model.ifThen(c6, c5)
     }
 
@@ -54,7 +54,7 @@ object Exercise_2b_4 {
       val ut = UsageType.values()[it.getIntVal(usageType)]
       val crs = clockRates.map { cr ->
         ClockRate.values()[it.getIntVal(cr)]
-      }
+      }.take(it.getIntVal(numCPUs))
       println("UsageType: $ut, Clockrate: $crs")
     }
 
