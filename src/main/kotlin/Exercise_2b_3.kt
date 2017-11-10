@@ -33,7 +33,7 @@ object Exercise_2b_3 {
     val numCPUs = 4
 
     val usageType = model.intVar(intValues<ClockRate>())
-    val clockRates = model.intVarArray(numCPUs, ClockRate.values().toIntValues())
+    val clockRates = model.intVarArray(numCPUs, intValues<ClockRate>())
 
     for (i in 1 until clockRates.size) {
       model.arithm(clockRates[0], "=", clockRates[i]).post()
