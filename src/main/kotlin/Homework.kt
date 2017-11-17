@@ -146,7 +146,8 @@ object ElbaTrekking {
     // if a place was not passed by it is not visited
     places.forEachIndexed { index, place ->
       val placeContained = model.member(index, placesVisited)
-//      model.
+      val twoRoutesToIt = model.or(model.boolVar(), model.boolVar()) // placeholders
+      model.ifThen(placeContained, twoRoutesToIt)
     }
 //    val solution = model.solver.findSolution()
 //    val solution = model.solver.findOptimalSolution(numRoutesUsed, Model.MAXIMIZE)
