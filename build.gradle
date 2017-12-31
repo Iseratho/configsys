@@ -2,7 +2,7 @@ group 'uni'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.2.10'
 
     repositories {
         mavenCentral()
@@ -22,8 +22,8 @@ repositories {
 }
 
 dependencies {
-//    compile "org.choco-solver:choco-solver:4.05"
-    compile group: 'org.choco-solver', name: 'choco-solver', version: '4.0.5'
+    compile group: 'org.choco-solver', name: 'choco-solver', version: '4.0.6'
+    compile group: 'org.choco-solver', name: 'choco-graph', version: '4.2.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
